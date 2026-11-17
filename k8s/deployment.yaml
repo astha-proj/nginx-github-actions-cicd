@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: ghcr.io/astha-proj/nginx-github-actions-cicd:b97cc429a6f78cf4fd483eb7450b71e3182cb2c2
+          image: ghcr.io/astha-proj/nginx-github-actions-cicd:7043e661f6c281ac840d8f37cc97cdbdb439784f
           ports:
             - containerPort: 80
