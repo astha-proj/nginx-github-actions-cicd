@@ -1,0 +1,16 @@
+
+name: Test ARC CD Runner
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-runner:
+    runs-on: arc-cd-runners
+
+    steps:
+      - name: Test runner
+        run: |
+          echo "Hello from ARC CD Runner!"
+          echo "Runner hostname: $(hostname)"
+          echo "ARC runner is working successfully"
