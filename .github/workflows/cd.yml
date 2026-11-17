@@ -1,0 +1,33 @@
+
+name: Deploy Nginx via ARC
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: arc-cd-runners
+
+    steps:
+      - name: Restart Nginx deployment in Minikube
+        shell: bash
+        run: |
+          set -e
+
+          API="https://kubernetes.default.svc"
+          TOKEN_FILE="/var/run/secrets/kubernetes.io/serviceaccount/token"
+          CA_FILE="/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+
+          test -f "$TOKEN_FILE"
+
+          TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+
+          curl --fail-with-body --silent --show-error \
+            --cacert "$CA_FILE" \
+            -H "Authorization: Bearer $(cat "$TOKEN_FILE")" \
+            -H "Content-Type: application/strategic-merge-patch+json" \
+            -X PATCH \
+            "$API/apis/apps/v1/namespaces/cicd-lab/deployments/nginx-cicd" \
+            -d "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"arc-test/restartedAt\":\"$TIMESTAMP\"}}}}}"
+
+          echo "Nginx deployment restart requested successfully"
