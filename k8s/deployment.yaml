@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-cicd
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx-cicd
+  template:
+    metadata:
+      labels:
+        app: nginx-cicd
+    spec:
+      containers:
+        - name: nginx
+          image: ghcr.io/astha-proj/nginx-github-actions-cicd:1001d7a68c9efa558a62afad3140eb94dd0a3d9e
+          ports:
+            - containerPort: 80
